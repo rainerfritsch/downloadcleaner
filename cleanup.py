@@ -1,12 +1,15 @@
 import os
 from pathlib import Path
 from configparser import ConfigParser
+import argparse
 
 
 parser = ConfigParser()
 parser.read('./config.ini')
 
 # config 
+# ändern zu https://www.geeksforgeeks.org/python-os-path-join-method/
+
 baseDirectory = str(Path.home())+os.sep
 downloadDirectory = baseDirectory + parser.get("folder", "downloadDirectory")
 documentDirectory = downloadDirectory + parser.get("folder", "documentDirectory")
@@ -15,6 +18,17 @@ installationDirectory= downloadDirectory + parser.get("folder", "installationDir
 musicDirectory = downloadDirectory + parser.get("folder", "musicDirectory")
 videoDirectory = downloadDirectory + parser.get("folder", "videoDirectory")
 archiveDirectory = downloadDirectory + parser.get("folder", "archiveDirectory")
+
+
+
+argParser = argparse.ArgumentParser()
+argParser.add_argument('-l','--location', help='Cleanup Desktop or Downloads')
+
+args = argParser.parse_args()
+
+if args.location is not None:
+    location=args.location
+    print("Selected location " + location)
 
 # files ending with this ending fall into that category
 txtfiles=parser.get("sorting", "txtfiles")
@@ -72,4 +86,5 @@ def main():
             os.rename(downloadDirectory+filename,archiveDirectory+filename)
 
 if __name__ == "__main__":
-    main()
+  
+  main()
